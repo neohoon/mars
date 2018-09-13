@@ -8,9 +8,9 @@ import argparse
 import numpy as np
 import cv2
 import json
-from Common import MyUtility as mu
-from Common import MyGUI as mg
-from Common import HoonUtils as hp
+import MyUtility as mu
+import MyGUI as mg
+import HoonUtils as hp
 
 
 CV2_FONT = cv2.FONT_HERSHEY_SIMPLEX
