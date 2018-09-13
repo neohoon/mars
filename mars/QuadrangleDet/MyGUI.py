@@ -3,7 +3,6 @@
 import sys
 import cv2
 import numpy as np
-import MyUtility as mu
 import HoonUtils as hp
 from operator import itemgetter
 
@@ -51,7 +50,7 @@ def zoom_and_crop(event, x, y, flags, param):
             yi -= MOUSE_OFFSET[1]
         elif event == cv2.EVENT_MOUSEMOVE:
             if g_cropping is True:
-                g_img_canvas = cv2.rectangle(np.copy(g_img_zoom), (xi, yi), (x, y), mu.RED, 2)
+                g_img_canvas = cv2.rectangle(np.copy(g_img_zoom), (xi, yi), (x, y), hp.RED, 2)
         elif event == cv2.EVENT_LBUTTONUP:
             xe, ye = x, y
             xe -= MOUSE_OFFSET[0]
@@ -66,7 +65,7 @@ def zoom_and_crop(event, x, y, flags, param):
             if 0 <= xi < xe < dim[1] and 0 <= yi < ye < dim[0]:
                 g_img_crop = g_img_full[yi:ye,xi:xe]
                 g_crop_box = [xi, yi, xe, ye]
-                g_img_zoom, g_scale_crop = mu.imresize_full(g_img_crop)
+                g_img_zoom, g_scale_crop = hp.imresize_full(g_img_crop)
                 g_img_canvas = np.copy(g_img_zoom)
                 dim = g_img_canvas.shape
                 cv2.resizeWindow('zoom_and_crop', dim[1], dim[0])
@@ -87,7 +86,7 @@ def zoom_and_crop(event, x, y, flags, param):
             yi -= MOUSE_OFFSET[1]
         elif event == cv2.EVENT_MOUSEMOVE:
             if g_selecting is True:
-                g_img_canvas = cv2.rectangle(np.copy(g_img_zoom), (xi, yi), (x, y), mu.BLUE, 2)
+                g_img_canvas = cv2.rectangle(np.copy(g_img_zoom), (xi, yi), (x, y), hp.BLUE, 2)
         elif event == cv2.EVENT_LBUTTONUP:
             xe, ye = x, y
             xe -= MOUSE_OFFSET[0]
@@ -98,7 +97,7 @@ def zoom_and_crop(event, x, y, flags, param):
             yi -= 4
             xe += 4
             ye += 4
-            g_img_canvas = cv2.rectangle(g_img_canvas, (xi, yi), (xe, ye), mu.GREEN, 2)
+            g_img_canvas = cv2.rectangle(g_img_canvas, (xi, yi), (xe, ye), hp.GREEN, 2)
             dim = g_img_canvas.shape
             cv2.resizeWindow('zoom_and_crop', dim[1], dim[0])
             xi = int(xi / g_scale_crop)
@@ -116,7 +115,7 @@ def specify_roi(img, win_loc=(10,10), color_fmt='RGB'):
     global g_scale_full, g_scale_crop
 
     if isinstance(img, str):
-        img = mu.imread_safe(img)
+        img = hp.imread_safe(img)
 
     cv2.namedWindow('zoom_and_crop')
     cv2.namedWindow('zoom_and_crop', cv2.WINDOW_NORMAL)
@@ -127,7 +126,7 @@ def specify_roi(img, win_loc=(10,10), color_fmt='RGB'):
 
     print(" # Zoom and crop...")
     disp_img = np.copy(g_img_full)
-    g_img_zoom, g_scale_full = mu.imresize_full(disp_img)
+    g_img_zoom, g_scale_full = hp.imresize_full(disp_img)
     g_img_canvas = g_img_zoom
 
     first = True
@@ -146,7 +145,7 @@ def specify_roi(img, win_loc=(10,10), color_fmt='RGB'):
         elif g_selected:
             if in_key == ord('n'):
                 disp_img = np.copy(g_img_full)
-                g_img_zoom, g_scale_full = mu.imresize_full(disp_img)
+                g_img_zoom, g_scale_full = hp.imresize_full(disp_img)
                 g_img_canvas = g_img_zoom
                 dim = g_img_canvas.shape
                 cv2.resizeWindow('zoom_and_crop', dim[1], dim[0])
@@ -168,7 +167,7 @@ def specify_roi(img, win_loc=(10,10), color_fmt='RGB'):
                                            (10, dim[0]-50),
                                            cv2.FONT_HERSHEY_SIMPLEX,
                                            0.5,
-                                           mu.RED,
+                                           hp.RED,
                                            2)
     cv2.destroyAllWindows()
     for i in range(5):
@@ -193,7 +192,7 @@ def specify_roi_line(img):
 
     print(" # Zoom and crop...")
     disp_img = np.copy(g_img_full)
-    g_img_zoom, g_scale_full = mu.imresize_full(g_img_full)
+    g_img_zoom, g_scale_full = hp.imresize_full(g_img_full)
     g_img_canvas = g_img_zoom
 
     while True:
@@ -203,7 +202,7 @@ def specify_roi_line(img):
             print(" @ Something wrong ? Bye...\n\n")
             return False
         elif in_key == ord('n'):
-            g_img_zoom, g_scale_full = mu.imresize_full(np.copy(g_img_full))
+            g_img_zoom, g_scale_full = hp.imresize_full(np.copy(g_img_full))
             g_img_canvas = g_img_zoom
             # dim = g_img_canvas.shape
             # cv2.resizeWindow('zoom_and_crop', dim[1], dim[0])
@@ -227,7 +226,7 @@ def specify_roi_line(img):
                                            (10, dim[0]-10),
                                            cv2.FONT_HERSHEY_SIMPLEX,
                                            1,
-                                           mu.RED,
+                                           hp.RED,
                                            4)
     cv2.destroyAllWindows()
     return roi
@@ -251,8 +250,8 @@ def specify_rois(img, roi_num, win_loc=(10,10)):
         print(" # Zoom and crop {:d}...".format(idx+1))
         disp_img = np.copy(g_img_full)
         for k1 in range(idx):
-            disp_img = cv2.rectangle(disp_img, tuple(roi[k1][:2]), tuple(roi[k1][2:]), mu.RED, -1)
-        g_img_zoom, g_scale_full = mu.imresize_full(disp_img)
+            disp_img = cv2.rectangle(disp_img, tuple(roi[k1][:2]), tuple(roi[k1][2:]), hp.RED, -1)
+        g_img_zoom, g_scale_full = hp.imresize_full(disp_img)
         g_img_canvas = g_img_zoom
 
         first = True
@@ -268,8 +267,8 @@ def specify_rois(img, roi_num, win_loc=(10,10)):
             elif in_key == ord('n'):
                 disp_img = np.copy(g_img_full)
                 for k1 in range(idx):
-                    disp_img = cv2.rectangle(disp_img, tuple(roi[k1][:2]), tuple(roi[k1][2:]), mu.RED, -1)
-                g_img_zoom, g_scale_full = mu.imresize_full(disp_img)
+                    disp_img = cv2.rectangle(disp_img, tuple(roi[k1][:2]), tuple(roi[k1][2:]), hp.RED, -1)
+                g_img_zoom, g_scale_full = hp.imresize_full(disp_img)
                 g_img_canvas = g_img_zoom
                 dim = g_img_canvas.shape
                 cv2.resizeWindow('zoom_and_crop', dim[1], dim[0])
@@ -288,7 +287,7 @@ def specify_rois(img, roi_num, win_loc=(10,10)):
             else:
                 dim = g_img_canvas.shape
                 g_img_canvas = cv2.putText(g_img_canvas, "Press \'y\' for yes or \'n\' for no", (10, dim[0]-50),
-                                           cv2.FONT_HERSHEY_SIMPLEX, 1, mu.RED, 4)
+                                           cv2.FONT_HERSHEY_SIMPLEX, 1, hp.RED, 4)
     cv2.destroyAllWindows()
     return roi
 
@@ -309,7 +308,7 @@ def specify_roi_line(img, win_loc=(10,10)):
 
     print(" # Zoom and crop...")
     disp_img = np.copy(g_img_full)
-    g_img_zoom, g_scale_full = mu.imresize_full(g_img_full)
+    g_img_zoom, g_scale_full = hp.imresize_full(g_img_full)
     g_img_canvas = g_img_zoom
 
     first = True
@@ -323,7 +322,7 @@ def specify_roi_line(img, win_loc=(10,10)):
             print(" @ Something wrong ? Bye...\n\n")
             return False
         elif in_key == ord('n'):
-            g_img_zoom, g_scale_full = mu.imresize_full(np.copy(g_img_full))
+            g_img_zoom, g_scale_full = hp.imresize_full(np.copy(g_img_full))
             g_img_canvas = g_img_zoom
             # dim = g_img_canvas.shape
             # cv2.resizeWindow('zoom_and_crop', dim[1], dim[0])
@@ -343,7 +342,7 @@ def specify_roi_line(img, win_loc=(10,10)):
             else:
                 dim = g_img_canvas
                 g_img_canvas = cv2.putText(g_img_canvas, "Press \'y\' for yes or \'n\' for no", (10, dim[0]-10),
-                                           cv2.FONT_HERSHEY_SIMPLEX, 2, mu.RED, 8)
+                                           cv2.FONT_HERSHEY_SIMPLEX, 2, hp.RED, 8)
     cv2.destroyAllWindows()
     return roi
 
@@ -364,7 +363,7 @@ def zoom_and_pick(event, x, y, flags, param):
             print(" Before zoom: (xi, yi) = {:d} {:d}".format(xi, yi))
         elif event == cv2.EVENT_MOUSEMOVE:
             if g_cropping is True:
-                g_img_canvas = cv2.rectangle(np.copy(g_img_zoom), (xi, yi), (x, y), mu.RED, 2)
+                g_img_canvas = cv2.rectangle(np.copy(g_img_zoom), (xi, yi), (x, y), hp.RED, 2)
         elif event == cv2.EVENT_LBUTTONUP:
             xe, ye = x, y
             print(" Before zoom: (xe, ye) = {:d} {:d}".format(xe, ye))
@@ -376,7 +375,7 @@ def zoom_and_pick(event, x, y, flags, param):
             ye = int(ye / g_scale_full)
             g_img_crop = g_img_full[yi:ye,xi:xe]
             g_crop_box = [xi, yi, xe, ye]
-            g_img_zoom, g_scale_crop = mu.imresize_full(g_img_crop)
+            g_img_zoom, g_scale_crop = hp.imresize_full(g_img_crop)
             g_img_canvas = np.copy(g_img_zoom)
             g_selecting = False
             g_selected  = 0
@@ -389,7 +388,7 @@ def zoom_and_pick(event, x, y, flags, param):
             print(" after zoom: (xi, yi) = {:d} {:d}".format(xi, yi))
         elif event == cv2.EVENT_MOUSEMOVE:
             if g_selecting is True:
-                g_img_canvas = cv2.rectangle(np.copy(g_img_zoom), (xi, yi), (x, y), mu.BLUE, 2)
+                g_img_canvas = cv2.rectangle(np.copy(g_img_zoom), (xi, yi), (x, y), hp.BLUE, 2)
         elif event == cv2.EVENT_LBUTTONUP:
             xe, ye = x, y
             g_selecting = False
@@ -399,7 +398,7 @@ def zoom_and_pick(event, x, y, flags, param):
             yi -= 4
             xe += 4
             ye += 4
-            g_img_canvas = cv2.rectangle(g_img_canvas, (xi, yi), (xe, ye), mu.GREEN, 2)
+            g_img_canvas = cv2.rectangle(g_img_canvas, (xi, yi), (xe, ye), hp.GREEN, 2)
             xi = int(xi / g_scale_crop)
             yi = int(yi / g_scale_crop)
             xe = int(xe / g_scale_crop)
@@ -432,7 +431,7 @@ def zoom_and_click(event, x, y, flags, param):
             print(" # mouse event left button down : {:d} {:d}".format(xi, yi))
         elif event == cv2.EVENT_MOUSEMOVE:
             if g_cropping is True:
-                g_img_canvas = cv2.rectangle(np.copy(g_img_zoom), (xi, yi), (x, y), mu.RED, 2)
+                g_img_canvas = cv2.rectangle(np.copy(g_img_zoom), (xi, yi), (x, y), hp.RED, 2)
         elif event == cv2.EVENT_LBUTTONUP:
             xe, ye = x, y
             print(" # mouse event left button up : {:d} {:d}".format(xe, ye))
@@ -444,7 +443,7 @@ def zoom_and_click(event, x, y, flags, param):
             ye = int(ye / g_scale_full)
             g_img_crop = g_img_full[yi:ye,xi:xe]
             g_crop_box = [xi, yi, xe, ye]
-            g_img_zoom, g_scale_crop = mu.imresize_full(g_img_crop)
+            g_img_zoom, g_scale_crop = hp.imresize_full(g_img_crop)
             g_img_canvas = np.copy(g_img_zoom)
             g_changed = True
             g_click_pos = []
@@ -506,9 +505,9 @@ def specify_ref_box_roi(ref_img, group_num, check_num):
         disp_img = np.copy(g_img_full)
         for k1 in range(idx):
             for k2 in range(check_num[idx]):
-                # disp_img = cv2.rectangle(disp_img, tuple(ref_box_roi[k1][k2][:2]), tuple(ref_box_roi[k1][k2][2:]), mu.RED, -1)
-                disp_img = mu.add_box_overlay(disp_img, ref_box_roi[k1][k2], mu.RED, 0.5)
-        g_img_zoom, g_scale_full = mu.imresize_full(disp_img)
+                # disp_img = cv2.rectangle(disp_img, tuple(ref_box_roi[k1][k2][:2]), tuple(ref_box_roi[k1][k2][2:]), hp.RED, -1)
+                disp_img = hp.add_box_overlay(disp_img, ref_box_roi[k1][k2], hp.RED, 0.5)
+        g_img_zoom, g_scale_full = hp.imresize_full(disp_img)
         ref_box_roi.append([])
         g_img_canvas = g_img_zoom
 
@@ -527,9 +526,9 @@ def specify_ref_box_roi(ref_img, group_num, check_num):
                 for k1 in range(idx):
                     for k2 in range(check_num[idx]):
                         # disp_img = cv2.rectangle(disp_img, tuple(ref_box_roi[k1][k2][:2]), tuple(ref_box_roi[k1][k2][2:]),
-                        # mu.RED, -1)
-                        disp_img = mu.add_box_overlay(disp_img, ref_box_roi[k1][k2], mu.RED, 0.5)
-                g_img_zoom, g_scale_full = mu.imresize_full(disp_img)
+                        # hp.RED, -1)
+                        disp_img = hp.add_box_overlay(disp_img, ref_box_roi[k1][k2], hp.RED, 0.5)
+                g_img_zoom, g_scale_full = hp.imresize_full(disp_img)
                 g_img_canvas = g_img_zoom
                 g_cropped = False
                 g_selected = 0
@@ -546,7 +545,7 @@ def specify_ref_box_roi(ref_img, group_num, check_num):
                     break
                 else:
                     g_img_canvas = cv2.putText(g_img_canvas, "Press \'y\' for the next step or \'n\' for previous step",
-                                               (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, mu.RED, 8)
+                                               (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, hp.RED, 8)
     cv2.destroyAllWindows()
 
     return ref_box_roi
@@ -569,7 +568,7 @@ def define_quadrilateral(ref_img):
     init_cv2_window('zoom_and_click')
     g_img_full = np.copy(ref_img)
 
-    g_img_zoom, g_scale_full = mu.imresize_full(g_img_full)
+    g_img_zoom, g_scale_full = hp.imresize_full(g_img_full)
     g_img_canvas = g_img_zoom
 
     g_changed = True
@@ -586,7 +585,7 @@ def define_quadrilateral(ref_img):
                                        (50, 60),
                                        cv2.FONT_HERSHEY_SIMPLEX,
                                        1,
-                                       mu.RED,
+                                       hp.RED,
                                        4)
         else:
             g_img_canvas = cv2.putText(g_img_canvas,
@@ -594,7 +593,7 @@ def define_quadrilateral(ref_img):
                                        (50, 60),
                                        cv2.FONT_HERSHEY_SIMPLEX,
                                        1,
-                                       mu.BLUE,
+                                       hp.BLUE,
                                        4)
         cv2.imshow('zoom_and_click', cv2.cvtColor(g_img_canvas, cv2.COLOR_RGB2BGR))
         in_key = cv2.waitKey(1) & 0xFF
@@ -608,7 +607,7 @@ def define_quadrilateral(ref_img):
             return 0
         if len(g_click_pos) == 4:
             if in_key == ord('n'):
-                g_img_zoom, g_scale_full = mu.imresize_full(g_img_full)
+                g_img_zoom, g_scale_full = hp.imresize_full(g_img_full)
                 g_img_canvas = g_img_zoom
                 g_cropped = False
                 g_changed = True

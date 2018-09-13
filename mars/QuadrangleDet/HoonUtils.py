@@ -828,6 +828,21 @@ def kill_process_with_port(server_addr, debug_=False):
     return True
 
 
+def imresize_full(img):
+
+    global screen_width, screen_height
+
+    dim = img.shape
+    h, w = dim[0], dim[1]
+    if h <= 0 or w <= 0:
+        zoom_w, zoom_h = 1, 1
+    else:
+        zoom_w = screen_width  / float(w) * 9/10.
+        zoom_h = screen_height / float(h) * 9/10.
+    zoom = min(zoom_h, zoom_w)
+    return cv2.resize(img, (0,0), fx=zoom, fy=zoom), zoom
+
+
 def hp_imread(): pass
 
 

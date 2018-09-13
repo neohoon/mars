@@ -104,7 +104,9 @@ def parse_arguments(argv):
     return parser.parse_args(argv)
 
 
-SELF_TEST_ = False
+SELF_TEST_ = True
+IMG_PATH = "DB_1.jpg"
+RST_PATH = '.'
 
 
 if __name__ == "__main__":
