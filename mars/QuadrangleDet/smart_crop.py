@@ -105,11 +105,7 @@ def parse_arguments(argv):
     return parser.parse_args(argv)
 
 
-SELF_TEST_ = True
-# IMG_PATH = "/home/henry/Downloads/Notes/notes"
-# RST_PATH = "/home/henry/Downloads/Notes/out_images"
-IMG_PATH = "../Common/test_images"
-RST_PATH = "../Common/test_results"
+SELF_TEST_ = False
 
 
 if __name__ == "__main__":
