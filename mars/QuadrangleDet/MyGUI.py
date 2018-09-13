@@ -3,8 +3,8 @@
 import sys
 import cv2
 import numpy as np
-from Common import MyUtility as mu
-from Common import HoonUtils as hp
+import MyUtility as mu
+import HoonUtils as hp
 from operator import itemgetter
 
 
