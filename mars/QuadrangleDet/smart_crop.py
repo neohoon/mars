@@ -8,7 +8,6 @@ import argparse
 import numpy as np
 import cv2
 import json
-import MyUtility as mu
 import MyGUI as mg
 import HoonUtils as hp
 
@@ -45,13 +44,13 @@ def main(args):
         guide_on_ = False
         while True:
             if not guide_on_:
-                img_zoom, _ = mu.imresize_full(out_img)
+                img_zoom, _ = hp.imresize_full(out_img)
                 disp_img = cv2.putText(img_zoom,
                                        "Press \'r\', \'f\', \'m\', \'y\', or \'s\'",
                                        (50, 60),
                                        CV2_FONT,
                                        1,
-                                       mu.RED,
+                                       hp.RED,
                                        4)
                 cv2.imshow('warping', cv2.cvtColor(disp_img, cv2.COLOR_RGB2BGR))
             in_key = cv2.waitKey(1) & 0xFF
